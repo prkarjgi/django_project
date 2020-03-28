@@ -1,9 +1,10 @@
-#
+# virtual environment
 venv/
 
-#
+# 
 __pycache__/
+*.pyc
 
-#
+# miscellaneous
 .vscode/
 test_json.json
