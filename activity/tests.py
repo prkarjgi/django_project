@@ -1,8 +1,16 @@
+from io import StringIO
+
 from django.test import TestCase
+from django.core.management import call_command
+from django.core.management.base import CommandError
+
 from activity.models import MyUser, ActivityPeriod
 
 
 class UserTestCase(TestCase):
+    """Class used to test adding users to the MyUser model
+
+    """
     def setUp(self):
         user1 = MyUser.objects.create_user(
             user_id='Q100',
@@ -15,7 +23,7 @@ class UserTestCase(TestCase):
             user_id='Q101',
             first_name='Fake',
             last_name='Name',
-            tz='Asia/Kolkata',
+            tz='America/Puerto_Rico',
             password='production'
         )
         user1.save()
@@ -24,3 +32,41 @@ class UserTestCase(TestCase):
     def test_create_user(self):
         users = MyUser.objects.count()
         self.assertEqual(users, 2)
+
+
+class AddUserTestCase(TestCase):
+    """Class used to test the 'add_user' management command used to add a user
+    to the MyUser model
+
+    """
+    def test_add_user(self):
+        out = StringIO()
+        call_command('add_user', 'Q102', 'New', 'User', 'Testing', stdout=out)
+        self.assertIn('SUCCESS', out.getvalue())
+
+        with self.assertRaises(ValueError):
+            call_command('add_user', 'Q102', 'Old', 'User', 'Testing', stdout=out)
+
+
+class AddActivityTestCase(TestCase):
+    """Class used to test the 'add_activity' management command to add dummy
+    activity data to the ActivityPeriod model
+
+    """
+    def setUp(self):
+        user1 = MyUser.objects.create_user(
+            user_id='Q102',
+            first_name='Test',
+            last_name='Case',
+            tz='Asia/Kolkata',
+            password='testing'
+        )
+        user1.save()
+
+    def test_add_activity(self):
+        out = StringIO()
+        call_command('add_activity', 'Q102', stdout=out)
+        self.assertIn('SUCCESS', out.getvalue())
+
+        with self.assertRaises(CommandError):
+            call_command('add_activity', 'Q105', stdout=out)

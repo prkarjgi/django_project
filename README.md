@@ -1,3 +1,3 @@
-## This is the Django project
+## Django Application
 
 ### 

@@ -36,11 +36,20 @@ class Command(BaseCommand):
         """This logic contained in this method is what is run when the command
         is invoked
 
+        The command accepts a list of user_ids as an argument. It will iterate
+        through the list and check if the given user_id exists in the MyUser
+        model. If the user_id is not found, a CommandError is raised.
+
+        While adding activity for a user, 2 rows are added to the ActivityPeriod
+        model. First an initial start time is taken in UTC, an arbitrary value
+        of 2 hours is added as the end time for the first row.
+        For the second row, an offset of 30 days is added to the initial
+        time. The end time is offset by 2 hours and 30 days from the initial
+        time.
         """
         for user_id in options['user_ids']:
-            try:
-                user = MyUser.objects.filter(user_id=user_id).first()
-            except MyUser.DoesNotExist:
+            user = MyUser.objects.filter(user_id=user_id).first()
+            if not user:
                 raise CommandError(f'user_id: {user_id} does not exist.')
 
             start = timezone.now()
@@ -59,5 +68,5 @@ class Command(BaseCommand):
             act2.save()
 
             self.stdout.write(
-                self.style.SUCCESS(f'Activity added for user_id: {user_id}')
+                self.style.SUCCESS(f'SUCCESS: Activity added for user_id: {user_id}')
             )

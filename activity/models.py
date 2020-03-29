@@ -14,6 +14,7 @@ class MyUserManager(BaseUserManager):
             user_id: string that represents the unique user id
             first_name: string, first name of the user
             last_name: string, last name of the user
+            tz: string, timezone assumed to be fixed for the user at a time
             password: string, password of the user
         """
         if not user_id:
@@ -41,6 +42,7 @@ class MyUser(AbstractBaseUser):
             cannot be null
         last_name: character field representing the last name of the user,
             cannot be null
+        tz: character field used to represent the timezone of the user
     """
     user_id = models.CharField(max_length=20, unique=True, null=False, primary_key=True)
     first_name = models.CharField(max_length=50, null=False)
@@ -63,10 +65,10 @@ class ActivityPeriod(models.Model):
     Attributes:
         myuser: column that acts as Foreign key, establishes a many-to-one
             relationship with the MyUser model
-        start_time: datetime field that represents the start time of a
-            user's activity on the app
-        end_time: datetime field that represents the end time of a user's
-            activity on the app
+        start_time: timezone aware datetime field that represents the start
+            time of a user's activity on the app. Stores datetime in UTC.
+        end_time: timezone aware datetime field that represents the end time
+            of a user's activity on the app. Stores datetime in UTC.
     """
     myuser = models.ForeignKey(MyUser, on_delete=models.CASCADE)
     start_time = models.DateTimeField()

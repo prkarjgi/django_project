@@ -32,6 +32,9 @@ class Command(BaseCommand):
         """This logic contained in this method is what is run when the command
         is invoked
 
+        The command accepts positional arguments for the user_id, first_name,
+        last_name and password. The timezone that is assumed to be fixed for
+        the user is selected at random from pytz.all_timezone_set.
         """
         user_id = options['user_id'][0]
         first_name = options['first_name'][0]
@@ -53,5 +56,5 @@ class Command(BaseCommand):
         )
         user.save()
         self.stdout.write(
-            self.style.SUCCESS(f'Added user_id: {user_id} to the MyUser model')
+            self.style.SUCCESS(f'SUCCESS: Added user_id: {user_id} to the MyUser model')
         )

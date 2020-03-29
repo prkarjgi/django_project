@@ -1,4 +1,4 @@
-"""
+"""View functions used by the API
 """
 import json
 import pytz
@@ -9,7 +9,16 @@ from .models import MyUser, ActivityPeriod
 
 
 def activityperiod(request):
-    """
+    """This is the view function that handles the API request
+
+    If the method of the request is GET, then the required data is returned.
+    The MyUser model is queried to retrieve all the users. The QuerySet of the
+    users is iterated over and the activity periods for that member are
+    retrieved.
+
+    The timezone for each user is assumed to be fixed and the start_time
+    and end_time, which are timezone aware DateTimeFields in UTC, are
+    converted into the local time with respect to the timezone of the user.
     """
     if request.method == 'GET':
         resp = {}
