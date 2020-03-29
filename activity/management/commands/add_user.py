@@ -3,6 +3,9 @@
 from activity.models import MyUser
 from django.core.management.base import BaseCommand, CommandError
 
+from random import choice
+import pytz
+
 
 class Command(BaseCommand):
     """Command class that defines the Management Command
@@ -23,7 +26,6 @@ class Command(BaseCommand):
         )
         parser.add_argument('first_name', nargs=1, help='First name of the user')
         parser.add_argument('last_name', nargs=1, help='Last name of the user')
-        parser.add_argument('tz', nargs=1, help='The timezone of the user')
         parser.add_argument('password', nargs=1, help='Password of the user')
 
     def handle(self, *args, **options):
@@ -34,12 +36,13 @@ class Command(BaseCommand):
         user_id = options['user_id'][0]
         first_name = options['first_name'][0]
         last_name = options['last_name'][0]
-        tz = options['tz'][0]
         password = options['password'][0]
 
         user = MyUser.objects.filter(user_id=user_id).first()
         if user:
             raise ValueError('user_id already exists')
+
+        tz = choice(tuple(pytz.all_timezones_set))
 
         user = MyUser.objects.create_user(
             user_id=user_id,
