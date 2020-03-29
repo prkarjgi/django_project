@@ -4,7 +4,9 @@ from activity.models import MyUser
 from django.core.management.base import BaseCommand, CommandError
 
 from random import choice
+from typing import List
 import pytz
+import uuid
 
 
 class Command(BaseCommand):
@@ -15,37 +17,28 @@ class Command(BaseCommand):
     """
     help = 'Adds a user to the MyUser model'
 
-    def add_arguments(self, parser):
-        """This method defines the arguments to be passed to the command
-
-        Arguments:
-            parser: an instance of class argparse.ArgumentParser
-        """
-        parser.add_argument(
-            'user_id', nargs=1, help='user_id of the user to be added'
-        )
-        parser.add_argument('first_name', nargs=1, help='First name of the user')
-        parser.add_argument('last_name', nargs=1, help='Last name of the user')
-        parser.add_argument('password', nargs=1, help='Password of the user')
-
     def handle(self, *args, **options):
         """This logic contained in this method is what is run when the command
         is invoked
 
-        The command accepts positional arguments for the user_id, first_name,
-        last_name and password. The timezone that is assumed to be fixed for
-        the user is selected at random from pytz.all_timezone_set.
+        The command randomly generates a user_id for the new user and checks
+        that the new id is not in the MyUser model.
+        A first name and last name are randomly chosen from the lists below
+        and the timezone is selected at random from list of
+        pytz.all_timezone_set. The same password is added for each dummy user.
         """
-        user_id = options['user_id'][0]
-        first_name = options['first_name'][0]
-        last_name = options['last_name'][0]
-        password = options['password'][0]
 
-        user = MyUser.objects.filter(user_id=user_id).first()
-        if user:
-            raise ValueError('user_id already exists')
+        users = MyUser.objects.all()
+        user_ids = [user.user_id for user in users]
+        if not user_ids:
+            user_id = str(uuid.uuid4())
+        else:
+            user_id = generate_user_id(user_ids)
 
+        first_name = choice(['Kawhi', 'Kevin', 'LeBron', 'Stephen', 'James'])
+        last_name = choice(['Leonard', 'Durant', 'James', 'Curry', 'Harden'])
         tz = choice(tuple(pytz.all_timezones_set))
+        password = 'testing'
 
         user = MyUser.objects.create_user(
             user_id=user_id,
@@ -58,3 +51,13 @@ class Command(BaseCommand):
         self.stdout.write(
             self.style.SUCCESS(f'SUCCESS: Added user_id: {user_id} to the MyUser model')
         )
+
+
+def generate_user_id(user_ids: List[str]) -> str:
+    x = str(uuid.uuid4())
+    while(1):
+        if x in user_ids:
+            x = str(uuid.uuid4())
+        else:
+            break
+    return x

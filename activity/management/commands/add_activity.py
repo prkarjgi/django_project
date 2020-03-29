@@ -20,25 +20,9 @@ class Command(BaseCommand):
     """
     help = 'Adds dummy user activity to the ActivityPeriod model'
 
-    def add_arguments(self, parser):
-        """This method defines the arguments to be passed to the command
-
-        Arguments:
-            parser: an instance of class argparse.ArgumentParser
-        """
-        parser.add_argument(
-            'user_ids',
-            nargs='+',
-            help='list of user_ids for which dummy activity data will be added'
-        )
-
     def handle(self, *args, **options):
         """This logic contained in this method is what is run when the command
-        is invoked
-
-        The command accepts a list of user_ids as an argument. It will iterate
-        through the list and check if the given user_id exists in the MyUser
-        model. If the user_id is not found, a CommandError is raised.
+        is invoked.
 
         While adding activity for a user, 2 rows are added to the ActivityPeriod
         model. First an initial start time is taken in UTC, an arbitrary value
@@ -47,11 +31,9 @@ class Command(BaseCommand):
         time. The end time is offset by 2 hours and 30 days from the initial
         time.
         """
-        for user_id in options['user_ids']:
-            user = MyUser.objects.filter(user_id=user_id).first()
-            if not user:
-                raise CommandError(f'user_id: {user_id} does not exist.')
 
+        users = MyUser.objects.all()
+        for user in users:
             start = timezone.now()
 
             act1 = ActivityPeriod(
@@ -68,5 +50,7 @@ class Command(BaseCommand):
             act2.save()
 
             self.stdout.write(
-                self.style.SUCCESS(f'SUCCESS: Activity added for user_id: {user_id}')
+                self.style.SUCCESS(
+                    f'SUCCESS: Activity added for user_id: {user.user_id}'
+                )
             )

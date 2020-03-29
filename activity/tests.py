@@ -41,11 +41,8 @@ class AddUserTestCase(TestCase):
     """
     def test_add_user(self):
         out = StringIO()
-        call_command('add_user', 'Q102', 'New', 'User', 'Testing', stdout=out)
+        call_command('add_user', stdout=out)
         self.assertIn('SUCCESS', out.getvalue())
-
-        with self.assertRaises(ValueError):
-            call_command('add_user', 'Q102', 'Old', 'User', 'Testing', stdout=out)
 
 
 class AddActivityTestCase(TestCase):
@@ -65,8 +62,5 @@ class AddActivityTestCase(TestCase):
 
     def test_add_activity(self):
         out = StringIO()
-        call_command('add_activity', 'Q102', stdout=out)
+        call_command('add_activity', stdout=out)
         self.assertIn('SUCCESS', out.getvalue())
-
-        with self.assertRaises(CommandError):
-            call_command('add_activity', 'Q105', stdout=out)

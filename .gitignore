@@ -1,9 +1,12 @@
+# Mac specific
+.DS_Store
+
 # virtual environment
 venv/
 
 # 
 __pycache__/
-*.pyc
+*.py[cod]
 
 # miscellaneous
 .vscode/

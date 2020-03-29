@@ -44,7 +44,7 @@ class MyUser(AbstractBaseUser):
             cannot be null
         tz: character field used to represent the timezone of the user
     """
-    user_id = models.CharField(max_length=20, unique=True, null=False, primary_key=True)
+    user_id = models.CharField(max_length=36, unique=True, null=False, primary_key=True)
     first_name = models.CharField(max_length=50, null=False)
     last_name = models.CharField(max_length=50, null=False)
     tz = models.CharField(max_length=30)
