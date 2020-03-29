@@ -32,7 +32,7 @@ This Django application is hosted on heroku at [https://prkarjgi-django.herokuap
 
 ## API endpoint
 This app has one API endpoint exposed to retrieve the data:
-URI | HTTP Method | Action
+HTTP Method | URI | Action
 --- | --- | ---
-/api/activity | GET | Retrieves data from MyUser and ActivityPeriod models according to specifications
+GET | [https://prkarjgi-django.herokuapp.com/api/activity] | Retrieves data from MyUser and ActivityPeriod models according to specifications
 
