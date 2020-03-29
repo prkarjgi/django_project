@@ -29,10 +29,13 @@ This Django application is hosted on heroku at [https://prkarjgi-django.herokuap
 2. add_activity: Adds dummy activity data for all users in MyUser model to the ActivityPeriod model
     usage: python manage.py add_activity
 
+These commands can be triggered using an API endpoint shown below.
+
 
 ## API endpoint
 This app has one API endpoint exposed to retrieve the data:
 HTTP Method | URI | Action
 --- | --- | ---
 GET | [https://prkarjgi-django.herokuapp.com/api/activity] | Retrieves data from MyUser and ActivityPeriod models according to specifications
+GET | [https://prkarjgi-django.herokuapp.com/api/command] | Runs Management Commands to populate the Models with dummy data
 
