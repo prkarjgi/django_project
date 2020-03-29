@@ -11,17 +11,22 @@ from .models import MyUser, ActivityPeriod
 
 
 def run_management_commands(request):
-    out = StringIO()
-    call_command('add_user', stdout=out)
-    add_user_result = out.getvalue()
+    """API used to run management commands to populate the MyUser and
+    ActivityPeriod models with dummy data
 
-    call_command('add_activity', stdout=out)
-    add_activity_result = out.getvalue()
-    response = {
-        'add_user result': add_user_result,
-        'add_activity result': add_activity_result
-    }
-    return JsonResponse(response, json_dumps_params={'indent': 4})
+    """
+    if request.method == 'GET':
+        out = StringIO()
+        call_command('add_user', stdout=out)
+        add_user_result = out.getvalue()
+
+        call_command('add_activity', stdout=out)
+        add_activity_result = out.getvalue()
+        response = {
+            'add_user result': add_user_result,
+            'add_activity result': add_activity_result
+        }
+        return JsonResponse(response, json_dumps_params={'indent': 4})
 
 
 def activityperiod(request):
@@ -66,7 +71,12 @@ def activityperiod(request):
 
 
 def convert_timezone(dt, tz, dt_format: str) -> str:
-    """
+    """Helper function to convert the UTC datetime into the timezone of the
+    user.
     """
     converted_dt = dt.astimezone(pytz.timezone(tz)).strftime(dt_format)
     return converted_dt
+
+
+def home(request):
+    return render(request, 'activity/home.html')

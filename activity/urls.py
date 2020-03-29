@@ -1,8 +1,9 @@
 from django.urls import path
-from .views import activityperiod, run_management_commands
+from . import views
 
 
 urlpatterns = [
-    path('api/activity', activityperiod, name='activity_period'),
-    path('api/command', run_management_commands, name='run_management_commands')
+    path('api/activity', views.activityperiod, name='activity_period'),
+    path('api/command', views.run_management_commands, name='run_management_commands'),
+    path('', views.home, name='home')
 ]

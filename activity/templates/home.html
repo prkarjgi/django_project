@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Django App</title>
+    </head>
+    <body>
+        <h2>Django Application</h2>
+        <br>
+        <h3>Description</h3>
+        <br>
+        <div>
+        This is a Django application used to create and retrieve Activity Period data. It is hosted on heroku at <a href="https://prkarjgi-django.herokuapp.com">here</a>.
+        </div>
+        <br>
+        <h3>API endpoints</h3>
+        <div>
+            <table>
+                <caption>API Endpoints exposed</caption>
+                <tr>
+                    <th>HTTP Method</th>
+                    <th>URI</th>
+                    <th>Action</th>
+                </tr>
+                <tr>
+                    <td>GET</td>
+                    <td><a href="https://prkarjgi-django.herokuapp.com/api/activity">api/activity</a></td>
+                    <td>Retrieves data from MyUser and ActivityPeriod models according to specifications</td>
+                </tr>
+                <tr>
+                    <td>GET</td>
+                    <td><a href="https://prkarjgi-django.herokuapp.com/api/command">api/command</a></td>
+                    <td>Runs Management Commands to populate the Models with dummy data</td>
+                </tr>
+            </table>
+        </div>
+    </body>
+</html>
