@@ -7,7 +7,7 @@ class MyUserManager(BaseUserManager):
     to add users to the MyUser model
 
     """
-    def create_user(self, user_id, first_name, last_name, password=None):
+    def create_user(self, user_id, first_name, last_name, tz, password=None):
         """Method that is used to create a new user in the MyUser model
 
         Arguments:
@@ -22,7 +22,8 @@ class MyUserManager(BaseUserManager):
         user = self.model(
             user_id=user_id,
             first_name=first_name,
-            last_name=last_name
+            last_name=last_name,
+            tz=tz
         )
 
         user.set_password(password)
@@ -44,6 +45,7 @@ class MyUser(AbstractBaseUser):
     user_id = models.CharField(max_length=20, unique=True, null=False, primary_key=True)
     first_name = models.CharField(max_length=50, null=False)
     last_name = models.CharField(max_length=50, null=False)
+    tz = models.CharField(max_length=30)
 
     USERNAME_FIELD = 'user_id'
     REQUIRED_FIELDS = ['first_name', 'last_name']

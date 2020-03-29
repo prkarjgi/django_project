@@ -1,10 +1,11 @@
 """This is a custom Management Command to add dummy activity data
 to the ActivityPeriod model
 """
-from datetime import datetime
+from datetime import timedelta, datetime
 
 from activity.models import MyUser, ActivityPeriod
 from django.core.management.base import BaseCommand, CommandError
+from django.utils import timezone
 
 import pytz
 
@@ -41,3 +42,22 @@ class Command(BaseCommand):
                 user = MyUser.objects.filter(user_id=user_id).first()
             except MyUser.DoesNotExist:
                 raise CommandError(f'user_id: {user_id} does not exist.')
+
+            start = timezone.now()
+
+            act1 = ActivityPeriod(
+                myuser=user,
+                start_time=start,
+                end_time=start + timedelta(hours=2)
+            )
+            act2 = ActivityPeriod(
+                myuser=user,
+                start_time=start + timedelta(days=30),
+                end_time=start + timedelta(hours=2, days=30)
+            )
+            act1.save()
+            act2.save()
+
+            self.stdout.write(
+                self.style.SUCCESS(f'Activity added for user_id: {user_id}')
+            )

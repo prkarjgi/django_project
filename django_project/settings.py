@@ -37,7 +37,8 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'activity.apps.ActivityConfig'
+    'activity.apps.ActivityConfig',
+    'rest_framework'
 ]
 
 MIDDLEWARE = [
@@ -81,7 +82,10 @@ DATABASES = {
         'USER': 'pranavkarajgikar',
         'PASSWORD': os.getenv('POSTGRES_PW'),
         'HOST': '127.0.0.1',
-        'PORT': '5432'
+        'PORT': '5432',
+        'TEST': {
+            'NAME': 'django_project_testing'
+        }
     }
 }
 
