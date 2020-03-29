@@ -2,10 +2,26 @@
 """
 import json
 import pytz
+from io import StringIO
 
 from django.shortcuts import render
+from django.core.management import call_command
 from django.http import HttpResponse, JsonResponse
 from .models import MyUser, ActivityPeriod
+
+
+def run_management_commands(request):
+    out = StringIO()
+    call_command('add_user', stdout=out)
+    add_user_result = out.getvalue()
+
+    call_command('add_activity', stdout=out)
+    add_activity_result = out.getvalue()
+    response = {
+        'add_user result': add_user_result,
+        'add_activity result': add_activity_result
+    }
+    return JsonResponse(response, json_dumps_params={'indent': 4})
 
 
 def activityperiod(request):
